@@ -1,0 +1,12 @@
+target/
+*.class
+.mvn/
+mvnw
+mvnw.cmd
+.idea/
+.vscode/
+.vscode-server/
+*.iml
+*.log
+.env
+application-local.properties
