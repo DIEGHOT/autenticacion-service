@@ -1,0 +1,79 @@
+package cl.duoc.backend_api.controller;
+
+import cl.duoc.backend_api.model.Usuario;
+import cl.duoc.backend_api.service.UsuarioService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@ExtendWith(MockitoExtension.class)
+public class UsuarioControllerTest {
+
+    private MockMvc mockMvc;
+
+    @Mock
+    private UsuarioService service;
+
+    @InjectMocks
+    private UsuarioController usuarioController;
+
+    @BeforeEach
+    void setUp() {
+        
+        mockMvc = MockMvcBuilders.standaloneSetup(usuarioController).build();
+    }
+
+    // 1. TEST STATUS 200 - Login exitoso
+    @Test
+    void debeRetornarStatus200_CuandoLoginEsExitoso() throws Exception {
+        Usuario usuarioMock = new Usuario();
+        // Simulamos que el servicio encuentra las credenciales y devuelve el usuario
+        Mockito.when(service.login(anyString(), anyString())).thenReturn(usuarioMock);
+
+        String jsonBody = "{\"username\":\"admin\", \"password\":\"1234\"}";
+
+        mockMvc.perform(post("/auth/login")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(jsonBody))
+               .andExpect(status().isOk());
+    }
+
+    // 2. TEST STATUS 201 - Registro de nuevo usuario
+    @Test
+    void debeRetornarStatus201_CuandoRegistraUsuario() throws Exception {
+        Usuario usuarioMock = new Usuario();
+        Mockito.when(service.registrar(any(Usuario.class))).thenReturn(usuarioMock);
+
+        String jsonBody = "{\"username\":\"nuevoUser\", \"password\":\"1234\"}";
+
+        mockMvc.perform(post("/auth/register")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(jsonBody))
+               .andExpect(status().isCreated());
+    }
+
+    // 3. TEST STATUS 404 - Usuario no encontrado por ID
+    @Test
+    void debeRetornarStatus404_CuandoUsuarioNoExiste() throws Exception {
+        // Simulamos que al buscar un ID que no existe, se lanza la excepción 404
+        Mockito.when(service.buscarPorId(99L))
+               .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        mockMvc.perform(get("/auth/99"))
+               .andExpect(status().isNotFound());
+    }
+}

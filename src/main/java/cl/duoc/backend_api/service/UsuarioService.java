@@ -1,10 +1,9 @@
 package cl.duoc.backend_api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cl.duoc.backend_api.model.Usuario;
 import cl.duoc.backend_api.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
@@ -25,6 +24,12 @@ public class UsuarioService {
         }
 
         return usuario;
+    }
+
+    // Nuevo método requerido por el microservicio de Gestión de Pedidos
+    public Usuario buscarPorId(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado en el sistema"));
     }
 }
 

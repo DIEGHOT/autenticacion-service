@@ -1,33 +1,23 @@
 package cl.duoc.backend_api.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
 public class UsuarioDTO {
-
-    @NotBlank(message = "El username es obligatorio")
     private String username;
-
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 4, message = "La contraseña debe tener mínimo 4 caracteres")
     private String password;
+    private String nombre;
+    private boolean activo;
 
-    public UsuarioDTO() {
-    }
+    public UsuarioDTO() {}
 
-    public String getUsername() {
-        return username;
-    }
+    // Getters y Setters
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
 }

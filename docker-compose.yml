@@ -7,7 +7,7 @@ services:
     container_name: mysql_autenticacion
     environment:
       MYSQL_ROOT_PASSWORD: clave_maestra_root
-      MYSQL_DATABASE: universidad_backend
+      MYSQL_DATABASE: db_amazorg_auth 
       MYSQL_USER: desarrollador
       MYSQL_PASSWORD: password_seguro_123
     ports:
