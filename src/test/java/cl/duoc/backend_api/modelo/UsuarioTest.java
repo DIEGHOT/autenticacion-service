@@ -19,10 +19,10 @@ public class UsuarioTest {
         assertEquals("1234", usuario.getPassword());
     }
 
-    // 2. Test puro: Constructor lleno (¡CORREGIDO!)
+    // 2. Test puro: Constructor lleno
     @Test
     void debeCrearUsuarioConConstructorLleno() {
-        // Ahora sí usamos el constructor lleno
+        // CORRECCIÓN: Le pasamos los datos al constructor
         Usuario usuario = new Usuario(2L, "testUser", "pass");
 
         assertEquals(2L, usuario.getId());
